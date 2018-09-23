@@ -16,7 +16,14 @@ router.get('/', (req, res, next) => {
 })
 
 router.get('/:id', (req, res, next) => {
-  School.findById(req.params.id)
+  School.findOne({
+    where: {
+      id: req.params.id
+    },
+    include: [
+      Student
+    ]
+  })
     .then(school => res.send(school))
 })
 

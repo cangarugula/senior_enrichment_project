@@ -1,13 +1,23 @@
 import React from 'react'
+import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 
-const Nav = () => {
+const Nav = ({students, schools}) => {
   return (
     <div>
-      <button>Students</button>
+      <Link to='/students'> <button>Students ({students.length})</button> </Link>
 
-      <button>Schools</button>
+
+      <Link to='/schools'> <button>Schools ({schools.length})</button> </Link>
     </div>
   )
 }
 
-export default Nav
+const mapStateToProps = ({students, schools}) => {
+  return {
+    students,
+    schools
+  }
+}
+
+export default connect(mapStateToProps)(Nav)

@@ -26,7 +26,7 @@ const Student = db.define('student', {
     allowNull: false
   },
   gpa: {
-    type: Sequelize.DECIMAL
+    type: Sequelize.DECIMAL(4,2)
   }
 })
 
