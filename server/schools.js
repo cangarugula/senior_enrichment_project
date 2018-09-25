@@ -40,7 +40,14 @@ router.delete('/:id', (req, res, next) => {
 })
 
 router.put('/:id', (req, res, next) => {
+  console.log('req.body ',req.body)
   School.findById(req.params.id)
-    .then(school => school.update(req.body))
-    .catch(next)
+    .then(school => {
+      school.update(req.body)
+      res.send(req.body)
+    })
+    .catch(err => {
+      console.log(err)
+      next(err)
+    })
 })

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Nav from './Nav'
-import store, { getStudents, getSchools } from './store'
+import store, { initialLoad, getStudents, getSchools } from './store'
 import {HashRouter as Router, Route, Switch} from 'react-router-dom'
 import Schools from './Schools'
 import Students from './Students'
@@ -9,8 +9,7 @@ import School from './School'
 class Main extends Component {
 
   componentDidMount() {
-    store.dispatch(getSchools())
-    store.dispatch(getStudents())
+    store.dispatch(initialLoad())
   }
 
   render(){

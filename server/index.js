@@ -4,10 +4,13 @@ const { syncAndSeed } = require('../db')
 const students = require('./students')
 const schools = require('./schools')
 const path = require('path')
+const bodyParser = require('body-parser')
 
 const port = process.env.PORT || 3000
 
 syncAndSeed()
+
+app.use(bodyParser.json())
 
 app.use('/api/schools', schools)
 app.use('/api/students', students)
