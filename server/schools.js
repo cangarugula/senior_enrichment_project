@@ -35,12 +35,15 @@ router.post('/', (req, res, next) => {
 
 router.delete('/:id', (req, res, next) => {
   School.findById(req.params.id)
-    .then( school => school.destroy())
+    .then( school => {
+      school.destroy()
+      res.send(school)
+    })
     .catch(next)
 })
 
 router.put('/:id', (req, res, next) => {
-  console.log('req.body ',req.body)
+
   School.findById(req.params.id)
     .then(school => {
       school.update(req.body)

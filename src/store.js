@@ -3,20 +3,25 @@ import logger from 'redux-logger'
 import thunk from 'redux-thunk'
 import axios from 'axios'
 
-// action types
-const GET_STUDENTS = 'GET_STUDENTS'
+// school action types
 const GET_SCHOOLS = 'GET_SCHOOLS'
+const GET_SCHOOL = 'GET_SCHOOL'
 const UPDATE_SCHOOL = 'UPDATE_SCHOOL'
+const DELETE_SCHOOL = 'DELETE_SCHOOL'
+
+// student action types
+const GET_STUDENTS = 'GET_STUDENTS'
 
 // action creators
 
 const _getStudents = (students) => ({ type: GET_STUDENTS, students })
 const _getSchools = (schools) => ({ type: GET_SCHOOLS, schools })
 
-const _updateSchool = (school) => {
-  console.log('hello')
-  return { type: UPDATE_SCHOOL, school }
-}
+const _getSchool = (school) => ({ type: GET_SCHOOL, school })
+
+const _updateSchool = (school) => ({ type: UPDATE_SCHOOL, school })
+
+const _deleteSchool = (school) => ({ type: DELETE_SCHOOL, school})
 
 // thunks
 
@@ -45,6 +50,13 @@ export const getSchools = () => {
   }
 }
 
+export const getSchool = (id) => {
+  return (dispatch) => {
+    axios.get(`/api/schools/${id}`)
+      .then(response => dispatch(_getSchool(response.data)))
+  }
+}
+
 export const updateSchool = (school) => {
 
   return (dispatch) => {
@@ -55,31 +67,50 @@ export const updateSchool = (school) => {
   }
 }
 
+export const deleteSchool = (school) => {
+  return (dispatch) => {
+    axios.delete(`/api/schools/${school.id}`)
+      .then(() => dispatch(_deleteSchool(school)))
+  }
+}
+
 
 // reducers
-const students = (state=[], action) => {
+
+const studentInitialState = {
+  students: [],
+  student: {}
+}
+
+const studentsReducer = (state=studentInitialState, action) => {
   switch(action.type) {
     case GET_STUDENTS:
-      return state = action.students
+      return {...state, students: action.students}
     default:
       return state
   }
 }
 
-const schools = (state=[], action) => {
+const schoolInitialState = {
+  schools: [],
+  school: {}
+}
+
+const schoolsReducer = (state=schoolInitialState, action) => {
   switch(action.type) {
     case GET_SCHOOLS:
-      return state = action.schools
+      return {...state, schools: action.schools }
     case UPDATE_SCHOOL:
-      const filter = state.filter(school => school.id !== action.school.id)
-      console.log([...filter, action.school])
-      return [...filter, action.school]
+      const filter = state.schools.filter(school => school.id !== action.school.id)
+      return {...state, schools: [...filter, action.school] }
+    case GET_SCHOOL:
+      return {...state, school: action.school}
     default:
       return state
   }
 }
 
-const reducer = combineReducers({students, schools})
+const reducer = combineReducers({studentsReducer, schoolsReducer })
 
 
 const store = createStore(reducer, applyMiddleware(logger,thunk))

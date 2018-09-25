@@ -13,10 +13,10 @@ const Nav = ({students, schools}) => {
   )
 }
 
-const mapStateToProps = ({students, schools}) => {
+const mapStateToProps = ({studentsReducer, schoolsReducer}) => {
   return {
-    students,
-    schools
+    students: studentsReducer.students,
+    schools: schoolsReducer.schools
   }
 }
 

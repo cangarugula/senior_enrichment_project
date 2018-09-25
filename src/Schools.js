@@ -16,9 +16,9 @@ const Schools = ({schools}) => {
   )
 }
 
-const mapStateToProps = ({schools}) => {
+const mapStateToProps = ({schoolsReducer}) => {
   return {
-    schools
+    schools: schoolsReducer.schools
   }
 }
 
