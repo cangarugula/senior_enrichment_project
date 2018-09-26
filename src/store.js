@@ -7,7 +7,9 @@ import axios from 'axios'
 const GET_SCHOOLS = 'GET_SCHOOLS'
 const GET_SCHOOL = 'GET_SCHOOL'
 const UPDATE_SCHOOL = 'UPDATE_SCHOOL'
+const SAVE_SCHOOL = 'SAVE_SCHOOL'
 const DELETE_SCHOOL = 'DELETE_SCHOOL'
+const CREATE_SCHOOL = 'CREATE_SCHOOL'
 
 // student action types
 const GET_STUDENTS = 'GET_STUDENTS'
@@ -19,9 +21,13 @@ const _getSchools = (schools) => ({ type: GET_SCHOOLS, schools })
 
 const _getSchool = (school) => ({ type: GET_SCHOOL, school })
 
-const _updateSchool = (school) => ({ type: UPDATE_SCHOOL, school })
+export const _updateSchool = (school) => ({ type: UPDATE_SCHOOL, school })
+
+const _saveSchool = (school) => ({ type: SAVE_SCHOOL, school })
 
 const _deleteSchool = (school) => ({ type: DELETE_SCHOOL, school})
+
+const _createSchool = (school) => ({ type: CREATE_SCHOOL, school })
 
 // thunks
 
@@ -57,13 +63,10 @@ export const getSchool = (id) => {
   }
 }
 
-export const updateSchool = (school) => {
-
+export const saveSchool = (school) => {
   return (dispatch) => {
     axios.put(`/api/schools/${school.id}`, school)
-      .then((response) => {
-        dispatch(_updateSchool(response.data))
-      })
+      .then((response) => dispatch(_saveSchool(response.data)))
   }
 }
 
@@ -71,6 +74,13 @@ export const deleteSchool = (school) => {
   return (dispatch) => {
     axios.delete(`/api/schools/${school.id}`)
       .then(() => dispatch(_deleteSchool(school)))
+  }
+}
+
+export const createSchool = (school) => {
+  return (dispatch) => {
+    axios.post('/api/schools',school)
+      .then(response => dispatch(_createSchool(response.data)))
   }
 }
 
@@ -101,10 +111,18 @@ const schoolsReducer = (state=schoolInitialState, action) => {
     case GET_SCHOOLS:
       return {...state, schools: action.schools }
     case UPDATE_SCHOOL:
-      const filter = state.schools.filter(school => school.id !== action.school.id)
-      return {...state, schools: [...filter, action.school] }
+      return {...state, school: action.school }
     case GET_SCHOOL:
       return {...state, school: action.school}
+    case SAVE_SCHOOL:
+      const filtered = state.schools.filter(school => school.id !== action.school.id)
+      return {...state, schools: [...filtered, action.school]}
+    case DELETE_SCHOOL:
+      const schools = state.schools.filter(school => school.id !== action.school.id)
+      return {...state, schools}
+    case CREATE_SCHOOL:
+      console.log([...state.schools, action.school])
+      return {...state, schools: [...state.schools, action.school]}
     default:
       return state
   }

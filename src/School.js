@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
-import { updateSchool, getSchool } from './store'
+import { Link } from 'react-router-dom'
+import { _updateSchool, saveSchool, getSchool, deleteSchool } from './store'
 
 class School extends Component {
   constructor(props) {
@@ -10,6 +11,7 @@ class School extends Component {
     }
     this.handleChange = this.handleChange.bind(this)
     this.handleSave = this.handleSave.bind(this)
+    this.handleDeleteSchool = this.handleDeleteSchool.bind(this)
   }
 
   componentDidMount() {
@@ -26,21 +28,27 @@ class School extends Component {
 
   handleChange(event) {
     event.preventDefault()
-    this.setState({
+    const school = {...this.props.school,
       [event.target.name]: event.target.value
-    })
+    }
+    this.props.handleChange(school)
   }
 
   handleSave() {
-    const school = {...this.state, id: this.props.id*1}
-    this.props.saveSchool(school)
+    this.props.handleSave(this.props.school)
+  }
+
+  handleDeleteSchool(){
+    this.props.deleteSchool(this.props.school)
+    this.props.history.push('/')
   }
 
 
   render() {
     const { loaded } = this.state
     const { school: { name, address, description, students} } = this.props;
-    const {handleChange, handleSave} = this
+
+    const {handleChange, handleSave, handleDeleteSchool} = this
 
     return (
       <Fragment>
@@ -67,9 +75,12 @@ class School extends Component {
                 </div>
                 <div>
                   <button onClick={handleSave}>Save</button>
-                  <button>Delete</button>
+                  <button onClick={handleDeleteSchool}>Delete</button>
                 </div>
-                <h4>Students Enrolled:</h4>
+                <div>
+                  <h4>Students Enrolled:</h4>
+                  <Link to='/students/create'><button>Add Student</button></Link>
+                </div>
                 <div>
                   {
                     students.map(student => <li key={student.id} >{student.firstName} {student.lastName} <button>X</button></li> )
@@ -77,7 +88,7 @@ class School extends Component {
                 </div>
               </div>
             ) : (
-              <span> Not loaded yet... </span>
+              <span> Loading... </span>
             )
         }
       </Fragment>
@@ -93,8 +104,10 @@ const mapStateToProps = ({schoolsReducer},{id}) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    saveSchool: (school) => dispatch(updateSchool(school)),
-    getSchool: (id) => dispatch(getSchool(id))
+    handleSave: (school) => dispatch(saveSchool(school)),
+    getSchool: (id) => dispatch(getSchool(id)),
+    handleChange: (school) => dispatch(_updateSchool(school)),
+    deleteSchool: (school) => dispatch(deleteSchool(school))
   }
 }
 

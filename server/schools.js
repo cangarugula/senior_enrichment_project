@@ -28,7 +28,10 @@ router.get('/:id', (req, res, next) => {
 })
 
 router.post('/', (req, res, next) => {
-  School.create(req.body)
+  School.create(req.body,
+    {
+      include: Student
+    })
     .then(school => res.send(school))
     .catch(next)
 })
@@ -37,7 +40,7 @@ router.delete('/:id', (req, res, next) => {
   School.findById(req.params.id)
     .then( school => {
       school.destroy()
-      res.send(school)
+      res.sendStatus(200)
     })
     .catch(next)
 })
