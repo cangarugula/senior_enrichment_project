@@ -5,16 +5,18 @@ import { Link } from 'react-router-dom'
 class Schools extends Component {
 
   render() {
-    const {schools} = this.props
-    console.log(schools)
+    const {schools, students} = this.props
+
     return (
       <div>
         <h3>Schools</h3>
         <Link to='/schools/create'><button>Create School</button></Link>
         <ul>
         {
-          schools.map( school => <Link key={school.id} to={`/schools/${school.id}`}><li key={school.id} >{school.name} {school.students.length ? school.students.length : null }</li></Link>
-          )
+          schools.map( school => {
+          const studentCount = students.filter(student => student.schoolId === school.id).length
+          return <Link key={school.id} to={`/schools/${school.id}`}><li key={school.id} >{school.name} ({studentCount})</li></Link>
+          })
         }
         </ul>
       </div>
@@ -22,9 +24,10 @@ class Schools extends Component {
   }
 }
 
-const mapStateToProps = ({schoolsReducer}) => {
+const mapStateToProps = ({schoolsReducer, studentsReducer}) => {
   return {
-    schools: schoolsReducer.schools
+    schools: schoolsReducer.schools,
+    students: studentsReducer.students
   }
 }
 

@@ -19,7 +19,7 @@ class School extends Component {
   }
 
   componentDidUpdate() {
-    if (this.props.school.id && !this.state.loaded){
+    if(this.props.school.id && !this.state.loaded){
       this.setState({
         loaded: true,
       })
@@ -46,7 +46,7 @@ class School extends Component {
 
   render() {
     const { loaded } = this.state
-    const { school: { name, address, description, students} } = this.props;
+    const { school: { name, address, description} , students } = this.props;
 
     const {handleChange, handleSave, handleDeleteSchool} = this
 
@@ -96,9 +96,10 @@ class School extends Component {
   }
 }
 
-const mapStateToProps = ({schoolsReducer},{id}) => {
+const mapStateToProps = ({schoolsReducer, studentsReducer},{id}) => {
   return {
-    school: schoolsReducer.school
+    school: schoolsReducer.school,
+    students: studentsReducer.students.filter(student => student.schoolId === id*1)
   }
 }
 

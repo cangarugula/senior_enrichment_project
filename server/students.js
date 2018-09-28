@@ -7,11 +7,7 @@ module.exports = router
 
 // routes funneled through /api/schools
 router.get('/', (req, res, next) => {
-  Student.findAll({
-    include: [
-      School
-    ]
-  })
+  Student.findAll()
     .then(students => res.send(students))
     .catch(next)
 })
@@ -20,10 +16,7 @@ router.get('/:id', (req, res, next) => {
   Student.findOne({
     where: {
       id: req.params.id
-    },
-    include: [
-      School
-    ]
+    }
   })
     .then(student => res.send(student))
 })

@@ -6,6 +6,7 @@ import Schools from './Schools'
 import Students from './Students'
 import School from './School'
 import CreateSchool from './CreateSchool'
+import Student from './Student'
 
 class Main extends Component {
 
@@ -20,10 +21,13 @@ class Main extends Component {
           <div>
             <Nav />
             <Switch>
+
               <Route exact path='/schools/create' render={ ({history}) => <CreateSchool history={history} /> }></Route>
+              <Route path='/students/:id' render={({match}) => <Student id={match.params.id}/> }></Route>
               <Route path='/schools/:id' render={ ({match, history}) => <School id={match.params.id} history={history} />}></Route>
-              <Route path='/schools' render={ ()=>  <Schools /> }></Route>
-              <Route path='/students' render={ ()=>  <Students /> }></Route>
+              <Route exact path='/schools' render={ ()=>  <Schools /> }></Route>
+              <Route exact path='/students' render={ ()=>  <Students /> }></Route>
+
             </Switch>
           </div>
         </Router>

@@ -1,16 +1,12 @@
 const express = require('express')
-const { School, Student } = require('../db').models
+const { School } = require('../db').models
 const router = express.Router()
 
 module.exports = router
 
 // routes funnelled through '/api/schools
 router.get('/', (req, res, next) => {
-  School.findAll({
-    include: [
-      Student
-    ]
-  })
+  School.findAll()
     .then(schools => res.send(schools))
     .catch(next)
 })
@@ -19,19 +15,13 @@ router.get('/:id', (req, res, next) => {
   School.findOne({
     where: {
       id: req.params.id
-    },
-    include: [
-      Student
-    ]
+    }
   })
     .then(school => res.send(school))
 })
 
 router.post('/', (req, res, next) => {
-  School.create(req.body,
-    {
-      include: Student
-    })
+  School.create(req.body)
     .then(school => res.send(school))
     .catch(next)
 })

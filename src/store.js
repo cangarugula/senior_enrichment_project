@@ -13,10 +13,20 @@ const CREATE_SCHOOL = 'CREATE_SCHOOL'
 
 // student action types
 const GET_STUDENTS = 'GET_STUDENTS'
+const GET_STUDENT = 'GET_STUDENT'
+const UPDATE_STUDENT = 'UPDATE_STUDENT'
 
-// action creators
+//  student action creators
 
 const _getStudents = (students) => ({ type: GET_STUDENTS, students })
+
+const _getStudent = (student) => ({ type: GET_STUDENT, student })
+
+export const _updateStudent = (student) => ({ type: UPDATE_STUDENT, student })
+
+
+// school action creators
+
 const _getSchools = (schools) => ({ type: GET_SCHOOLS, schools })
 
 const _getSchool = (school) => ({ type: GET_SCHOOL, school })
@@ -42,12 +52,24 @@ export const initialLoad = () => {
   }
 }
 
+// student thunks
+
 export const getStudents = () => {
   return (dispatch) => {
     axios.get('/api/students')
       .then(response => dispatch(_getStudents(response.data)))
   }
 }
+
+export const getStudent = (id) => {
+  return (dispatch) => {
+    axios.get(`/api/students/${id}`)
+      .then(response => dispatch(_getStudent(response.data)))
+  }
+}
+
+
+// school thunks
 
 export const getSchools = () => {
   return (dispatch) => {
@@ -96,6 +118,10 @@ const studentsReducer = (state=studentInitialState, action) => {
   switch(action.type) {
     case GET_STUDENTS:
       return {...state, students: action.students}
+    case GET_STUDENT:
+      return {...state, student: action.student}
+    case UPDATE_STUDENT:
+      return {...state, student: action.student}
     default:
       return state
   }
