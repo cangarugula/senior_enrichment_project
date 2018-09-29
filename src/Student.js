@@ -1,15 +1,17 @@
 import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
-import { getStudent, _updateStudent } from './store';
+import { getStudent, _updateStudent, saveStudent, deleteStudent } from './store';
 
 
 class Student extends Component {
   constructor(props){
     super(props)
     this.state = {
-      loaded: false
+      loaded: false,
     }
     this.handleChange = this.handleChange.bind(this)
+    this.handleSave = this.handleSave.bind(this)
+    this.handleDelete = this.handleDelete.bind(this)
   }
 
   componentDidMount() {
@@ -19,23 +21,38 @@ class Student extends Component {
   componentDidUpdate() {
     if(this.props.student.id && !this.state.loaded) {
       this.setState({
-        loaded: true
+        loaded: true,
       })
     }
   }
 
-
   handleChange(event) {
     event.preventDefault()
-    const student = {...this.props.student, [event.target.name]: event.target.value }
+    const student = {...this.props.student, [event.target.name]: event.target.value}
     this.props.handleChange(student)
+    console.log(document.getElementById('save'))
+    document.getElementById('save').removeAttribute('disabled')
+    console.log(document.getElementById('status'))
   }
+
+  handleSave(event) {
+    event.preventDefault()
+    const student = {...this.props.student, schoolId: this.props.student.schoolId*1 }
+    this.props.saveStudent(student)
+    document.getElementById('status').removeAttribute('hidden')
+  }
+
+  handleDelete(event) {
+    event.preventDefault()
+    this.props.deleteStudent(this.props.student)
+    this.props.history.push('/students')
+  }
+
 
   render() {
     const {student, schools} = this.props
-    const currentSchool = schools.filter(school => school.id === student.schoolId)[0]
     const {loaded} = this.state
-    const {handleChange} = this
+    const {handleChange, handleSave, handleDelete} = this
 
     return (
       <Fragment>
@@ -58,20 +75,25 @@ class Student extends Component {
                 </div>
                 <div>
                   <label>School: </label>
-                  <select name='schoolId' value={currentSchool} onChange={handleChange}>
+                  <select name='schoolId' onChange={handleChange} value={student.schoolId ? student.schoolId : 'null'}>
+                    <option value={'null'} >None</option>
                     {
-                      schools.map(school => <option key={school.id} value={school.id} >{school.name}</option>)
+                      schools.map(school => <option key={school.id*1} value={school.id*1} >{school.name}</option>)
                     }
                   </select>
                 </div>
                 <div>
-                  <button>Save</button>
-                  <button>Delete</button>
+                  <button onClick={()=> this.props.history.push('/students')}>Back</button>
+                  <button id='save' disabled={true} onClick={handleSave}>Save</button>
+                  <button onClick={handleDelete}>Delete</button>
+                </div>
+                <div >
+                  <h5 id='status' hidden={true} >Saved!</h5>
                 </div>
               </form>
             </div>
           ) : (
-            <span>Loading...</span>
+            <span>Loading student info. Please wait.</span>
           )
         }
       </Fragment>
@@ -79,10 +101,10 @@ class Student extends Component {
   }
 }
 
-const mapStateToProps = ({studentsReducer, schoolsReducer}, {id}) => {
+const mapStateToProps = ({studentsReducer, schoolsReducer}) => {
 
   return {
-    student: studentsReducer.students.filter(student => student.id === id*1 )[0],
+    student: studentsReducer.student,
     schools: schoolsReducer.schools
   }
 }
@@ -90,7 +112,9 @@ const mapStateToProps = ({studentsReducer, schoolsReducer}, {id}) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     getStudent: (id) => dispatch(getStudent(id)),
-    handleChange: (student) => dispatch(_updateStudent(student))
+    handleChange: (student) => dispatch(_updateStudent(student)),
+    saveStudent: (student) => dispatch(saveStudent(student)),
+    deleteStudent: (student) => dispatch(deleteStudent(student))
   }
 }
 

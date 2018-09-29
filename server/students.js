@@ -29,7 +29,10 @@ router.post('/', (req, res, next) => {
 
 router.delete('/:id', (req, res, next) => {
   Student.findById(req.params.id)
-    .then(student => student.destroy())
+    .then(student => {
+      student.destroy()
+      res.sendStatus(200)
+    })
     .catch(next)
 })
 

@@ -1,8 +1,31 @@
 import React, {Component} from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
+import {getSchools} from './store'
 
 class Schools extends Component {
+
+  constructor() {
+    super()
+    this.state = {
+      loaded: false
+    }
+  }
+
+  componentDidMount() {
+    this.props.getSchools()
+    this.setState({
+      loaded: true
+    })
+  }
+
+  componentDidUpdate(prevProps) {
+    if(!this.state.loaded || this.props.schools !== prevProps.schools){
+      this.setState({
+        loaded: !this.state.loaded
+      })
+    }
+  }
 
   render() {
     const {schools, students} = this.props

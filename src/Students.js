@@ -1,15 +1,41 @@
 import React, {Component} from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { getStudents } from './store'
 
 class Students extends Component {
+
+  constructor() {
+    super()
+    this.state = {
+      loaded: false
+    }
+  }
+
+  componentDidMount() {
+    this.props.getStudents()
+    this.setState({
+      loaded: true
+    })
+  }
+
+  componentDidUpdate(prevProps) {
+    if(this.props.students !== prevProps.students){
+      this.setState({
+        loaded: !this.state.loaded
+      })
+
+    }
+  }
 
 
   render() {
     const { students , schools} = this.props
+
     return (
       <div>
         <h3>Students</h3>
+        <Link to='/students/create'><button>Add Student</button></Link>
         <ul>
           {
             students.map(student => {
@@ -31,4 +57,10 @@ const mapStateToProps = ({studentsReducer, schoolsReducer}) => {
   }
 }
 
-export default connect(mapStateToProps)(Students)
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getStudents: () => dispatch(getStudents())
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Students)

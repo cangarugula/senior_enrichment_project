@@ -15,6 +15,10 @@ const CREATE_SCHOOL = 'CREATE_SCHOOL'
 const GET_STUDENTS = 'GET_STUDENTS'
 const GET_STUDENT = 'GET_STUDENT'
 const UPDATE_STUDENT = 'UPDATE_STUDENT'
+const SAVE_STUDENT = 'SAVE_STUDENT'
+const DELETE_STUDENT = 'DELETE_STUDENT'
+const CREATE_STUDENT = 'CREATE_STUDENT'
+
 
 //  student action creators
 
@@ -24,6 +28,11 @@ const _getStudent = (student) => ({ type: GET_STUDENT, student })
 
 export const _updateStudent = (student) => ({ type: UPDATE_STUDENT, student })
 
+const _saveStudent = (student) => ({ type: SAVE_STUDENT, student })
+
+const _deleteStudent = (student) => ({ type: DELETE_STUDENT, student })
+
+const _createStudent = (student) => ({ type: CREATE_STUDENT, student })
 
 // school action creators
 
@@ -68,6 +77,27 @@ export const getStudent = (id) => {
   }
 }
 
+export const saveStudent = (student) => {
+  return (dispatch) => {
+    axios.put(`/api/students/${student.id}`, student)
+      .then(response => dispatch(_saveStudent(response.data)))
+  }
+}
+
+export const deleteStudent = (student) => {
+  return (dispatch) => {
+    axios.delete(`/api/students/${student.id}`)
+      .then(() => dispatch(_deleteStudent(student)))
+  }
+}
+
+export const createStudent = (student) => {
+  return (dispatch) => {
+    axios.post('/api/students', student)
+      .then(response => dispatch(_createStudent(response.data)))
+
+  }
+}
 
 // school thunks
 
@@ -122,6 +152,14 @@ const studentsReducer = (state=studentInitialState, action) => {
       return {...state, student: action.student}
     case UPDATE_STUDENT:
       return {...state, student: action.student}
+    case SAVE_STUDENT:
+      const filtered = state.students.filter(student => student.id !== action.school.id)
+      return {...state, schools: [...filtered, action.school]}
+    case DELETE_STUDENT:
+      const students = state.students.filter(student => student.id !== action.student.id)
+      return {...state, students}
+    case CREATE_STUDENT:
+      return {...state, students: [...state.students, action.student]}
     default:
       return state
   }
