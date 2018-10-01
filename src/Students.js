@@ -5,33 +5,35 @@ import { getStudents } from './store'
 
 class Students extends Component {
 
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = {
       loaded: false
     }
   }
 
-  componentDidMount() {
-    this.props.getStudents()
-    this.setState({
-      loaded: true
-    })
-  }
+  // componentDidMount() {
+  //   this.props.getStudents()
+  //   this.setState({
+  //     loaded: true
+  //   })
+  // }
 
   componentDidUpdate(prevProps) {
-    if(this.props.students !== prevProps.students){
+    console.log('this ',this.props)
+    console.log('prev ', prevProps)
+    if(this.props !== prevProps){
+      console.log('update')
       this.setState({
         loaded: !this.state.loaded
       })
-
     }
   }
 
 
   render() {
     const { students , schools} = this.props
-
+    console.log('render')
     return (
       <div>
         <h3>Students</h3>

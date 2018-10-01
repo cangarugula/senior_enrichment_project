@@ -18,10 +18,10 @@ class Student extends Component {
     this.props.getStudent(this.props.id)
   }
 
-  componentDidUpdate() {
-    if(this.props.student.id && !this.state.loaded) {
+  componentDidUpdate(prevProps) {
+    if(this.props !== prevProps) {
       this.setState({
-        loaded: true,
+        loaded: !this.state.loaded,
       })
     }
   }
@@ -30,15 +30,20 @@ class Student extends Component {
     event.preventDefault()
     const student = {...this.props.student, [event.target.name]: event.target.value}
     this.props.handleChange(student)
-    console.log(document.getElementById('save'))
+    document.getElementById('status').setAttribute('hidden',true)
     document.getElementById('save').removeAttribute('disabled')
-    console.log(document.getElementById('status'))
   }
 
   handleSave(event) {
     event.preventDefault()
-    const student = {...this.props.student, schoolId: this.props.student.schoolId*1 }
-    this.props.saveStudent(student)
+
+    const update = {...this.props.student}
+    if(update.schoolId === ''){
+      update.schoolId = null
+    } else {
+      update.schoolId = update.schoolId * 1
+    }
+    this.props.saveStudent(update)
     document.getElementById('status').removeAttribute('hidden')
   }
 
@@ -51,16 +56,15 @@ class Student extends Component {
 
   render() {
     const {student, schools} = this.props
-    const {loaded} = this.state
     const {handleChange, handleSave, handleDelete} = this
 
     return (
       <Fragment>
         {
-          loaded ? (
+          student.id ? (
             <div>
               <h4>{student.firstName} {student.lastName}</h4>
-              <form>
+              <form onSubmit={handleSave}>
                 <div>
                   <label>First Name: </label>
                   <input name='firstName' value={student.firstName} onChange={handleChange}/>
@@ -76,22 +80,23 @@ class Student extends Component {
                 <div>
                   <label>School: </label>
                   <select name='schoolId' onChange={handleChange} value={student.schoolId ? student.schoolId : 'null'}>
-                    <option value={'null'} >None</option>
+                    <option value={''} >None</option>
                     {
                       schools.map(school => <option key={school.id*1} value={school.id*1} >{school.name}</option>)
                     }
                   </select>
                 </div>
+
                 <div>
-                  <button onClick={()=> this.props.history.push('/students')}>Back</button>
-                  <button id='save' disabled={true} onClick={handleSave}>Save</button>
-                  <button onClick={handleDelete}>Delete</button>
+                  <button id='save' disabled={true} type='submit'>Save</button>
                 </div>
+                </form>
                 <div >
                   <h5 id='status' hidden={true} >Saved!</h5>
                 </div>
-              </form>
-            </div>
+                <button onClick={handleDelete}>Delete</button>
+                <button onClick={()=> this.props.history.push('/students')}>Back</button>
+                </div>
           ) : (
             <span>Loading student info. Please wait.</span>
           )

@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { _updateSchool, saveSchool, getSchool, deleteSchool } from './store'
+import { _updateSchool, saveSchool, getSchool, deleteSchool, deleteStudent, saveStudent } from './store'
 
 class School extends Component {
   constructor(props) {
@@ -12,16 +12,17 @@ class School extends Component {
     this.handleChange = this.handleChange.bind(this)
     this.handleSave = this.handleSave.bind(this)
     this.handleDeleteSchool = this.handleDeleteSchool.bind(this)
+    this.handleUnenrollStudent = this.handleUnenrollStudent.bind(this)
   }
 
   componentDidMount() {
     this.props.getSchool(this.props.id)
   }
 
-  componentDidUpdate() {
-    if(this.props.school.id && !this.state.loaded){
+  componentDidUpdate(prevProps) {
+    if(this.props !== prevProps){
       this.setState({
-        loaded: true,
+        loaded: !this.state.loaded,
       })
     }
   }
@@ -32,10 +33,16 @@ class School extends Component {
       [event.target.name]: event.target.value
     }
     this.props.handleChange(school)
+    document.getElementById('status').setAttribute('hidden',true)
+    document.getElementById('save').removeAttribute('disabled')
+
   }
 
-  handleSave() {
-    this.props.handleSave(this.props.school)
+  handleSave(event) {
+    event.preventDefault()
+    this.props.saveSchool(this.props.school)
+    document.getElementById('status').removeAttribute('hidden')
+    document.getElementById('save').setAttribute('disabled', true)
   }
 
   handleDeleteSchool(){
@@ -43,22 +50,30 @@ class School extends Component {
     this.props.history.push('/')
   }
 
+  handleUnenrollStudent(student) {
+    const update = {...student, schoolId: null}
+    console.log(update)
+    this.props.saveStudent(update)
+    this.setState({
+      loaded: !this.state.loaded
+    })
+  }
+
 
   render() {
-    const { loaded } = this.state
-    const { school: { name, address, description} , students } = this.props;
+    const { school: { id, name, address, description} , students } = this.props;
 
-    const {handleChange, handleSave, handleDeleteSchool} = this
+    const {handleChange, handleSave, handleDeleteSchool, handleUnenrollStudent} = this
 
     return (
       <Fragment>
         {
-          loaded
+          id
             ? (
               <div>
                 <h3>{name}</h3>
                 <div>
-                  <form>
+                  <form onSubmit={handleSave}>
                     <div>
                       <label>Name: </label>
                         <input name='name' value={name} onChange={handleChange}/>
@@ -71,20 +86,25 @@ class School extends Component {
                       <label>Description: </label>
                       <textarea name='description' value={description} onChange={handleChange}/>
                     </div>
+                    <button id='save' disabled={true} type='submit' >Save</button>
                   </form>
                 </div>
                 <div>
-                  <button onClick={handleSave}>Save</button>
-                  <button onClick={handleDeleteSchool}>Delete</button>
+                  <div >
+                    <h5 id='status' hidden={true} >Saved!</h5>
+                  </div>
+                  <button onClick={() => handleDeleteSchool()}>Delete</button>
                 </div>
                 <div>
                   <h4>Students Enrolled:</h4>
-                  <Link to='/students/create'><button>Add Student</button></Link>
+                  <Link to={`/students/create/${this.props.id}`}><button>Add Student</button></Link>
                 </div>
                 <div>
-                  {
-                    students.map(student => <li key={student.id} >{student.firstName} {student.lastName} <button>X</button></li> )
-                  }
+                  <ul>
+                    {
+                      students.map(student => <li key={student.id} >{student.firstName} {student.lastName} <button onClick={()=> handleUnenrollStudent(student)}>X</button></li> )
+                    }
+                  </ul>
                 </div>
               </div>
             ) : (
@@ -105,10 +125,12 @@ const mapStateToProps = ({schoolsReducer, studentsReducer},{id}) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    handleSave: (school) => dispatch(saveSchool(school)),
+    saveSchool: (school) => dispatch(saveSchool(school)),
     getSchool: (id) => dispatch(getSchool(id)),
     handleChange: (school) => dispatch(_updateSchool(school)),
-    deleteSchool: (school) => dispatch(deleteSchool(school))
+    deleteSchool: (school) => dispatch(deleteSchool(school)),
+    deleteStudent: (student) => dispatch(deleteStudent(student)),
+    saveStudent: (student) => dispatch(saveStudent(student))
   }
 }
 

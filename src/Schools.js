@@ -5,22 +5,16 @@ import {getSchools} from './store'
 
 class Schools extends Component {
 
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = {
       loaded: false
     }
   }
 
-  componentDidMount() {
-    this.props.getSchools()
-    this.setState({
-      loaded: true
-    })
-  }
 
   componentDidUpdate(prevProps) {
-    if(!this.state.loaded || this.props.schools !== prevProps.schools){
+    if(this.props !== prevProps || !this.state.loaded){
       this.setState({
         loaded: !this.state.loaded
       })
@@ -29,7 +23,6 @@ class Schools extends Component {
 
   render() {
     const {schools, students} = this.props
-
     return (
       <div>
         <h3>Schools</h3>
@@ -54,4 +47,10 @@ const mapStateToProps = ({schoolsReducer, studentsReducer}) => {
   }
 }
 
-export default connect(mapStateToProps)(Schools)
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getSchools: () => dispatch(getSchools())
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Schools)

@@ -10,7 +10,7 @@ class CreateStudent extends Component {
       firstName: '',
       lastName: '',
       gpa: '',
-      schoolId: 0
+      schoolId: props.schoolId
     }
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -34,7 +34,9 @@ class CreateStudent extends Component {
     const {schools} = this.props
     const {firstName, lastName, gpa, schoolId} = this.state
     const {handleChange, handleSubmit} = this
-    console.log(this.state)
+
+    console.log('history ', this.props.history)
+    console.log('match params ', this.props.schoolId)
 
     return (
       <div>
