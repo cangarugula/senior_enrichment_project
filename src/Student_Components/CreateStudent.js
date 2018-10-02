@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import { connect } from 'react-redux'
-import {createStudent} from './store'
+import {createStudent} from '../store'
 
 
 class CreateStudent extends Component {
@@ -10,7 +10,7 @@ class CreateStudent extends Component {
       firstName: '',
       lastName: '',
       gpa: '',
-      schoolId: props.schoolId
+      schoolId: props.schoolId || 0
     }
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)

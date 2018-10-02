@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
-import { getStudent, _updateStudent, saveStudent, deleteStudent } from './store';
+import { getStudent, _updateStudent, saveStudent, deleteStudent } from '../store';
 
 
 class Student extends Component {
@@ -36,13 +36,7 @@ class Student extends Component {
 
   handleSave(event) {
     event.preventDefault()
-
     const update = {...this.props.student}
-    if(update.schoolId === ''){
-      update.schoolId = null
-    } else {
-      update.schoolId = update.schoolId * 1
-    }
     this.props.saveStudent(update)
     document.getElementById('status').removeAttribute('hidden')
   }

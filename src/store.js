@@ -63,12 +63,6 @@ export const initialLoad = () => {
 
 // student thunks
 
-export const getStudents = () => {
-  return (dispatch) => {
-    axios.get('/api/students')
-      .then(response => dispatch(_getStudents(response.data)))
-  }
-}
 
 export const getStudent = (id) => {
   return (dispatch) => {
@@ -78,9 +72,17 @@ export const getStudent = (id) => {
 }
 
 export const saveStudent = (student) => {
+  if(student.schoolId === ''){
+    student.schoolId = null
+  } else {
+    student.schoolId = student.schoolId * 1
+  }
+  console.log(student)
   return (dispatch) => {
     axios.put(`/api/students/${student.id}`, student)
-      .then(response => dispatch(_saveStudent(response.data)))
+      .then(() => {
+        dispatch(_saveStudent(student))
+      })
   }
 }
 
@@ -101,12 +103,6 @@ export const createStudent = (student) => {
 
 // school thunks
 
-export const getSchools = () => {
-  return (dispatch) => {
-    axios.get('/api/schools')
-      .then(response => dispatch(_getSchools(response.data)))
-  }
-}
 
 export const getSchool = (id) => {
   return (dispatch) => {
@@ -118,7 +114,9 @@ export const getSchool = (id) => {
 export const saveSchool = (school) => {
   return (dispatch) => {
     axios.put(`/api/schools/${school.id}`, school)
-      .then((response) => dispatch(_saveSchool(response.data)))
+      .then((response) => {
+        dispatch(_saveSchool(response.data))
+      })
   }
 }
 
@@ -153,8 +151,8 @@ const studentsReducer = (state=studentInitialState, action) => {
     case UPDATE_STUDENT:
       return {...state, student: action.student}
     case SAVE_STUDENT:
-      const filtered = state.students.filter(student => student.id !== action.school.id)
-      return {...state, schools: [...filtered, action.school]}
+      const filtered = state.students.filter(student => student.id !== action.student.id)
+      return {...state, students: [...filtered, action.student]}
     case DELETE_STUDENT:
       const students = state.students.filter(student => student.id !== action.student.id)
       return {...state, students}
@@ -185,7 +183,6 @@ const schoolsReducer = (state=schoolInitialState, action) => {
       const schools = state.schools.filter(school => school.id !== action.school.id)
       return {...state, schools}
     case CREATE_SCHOOL:
-      console.log([...state.schools, action.school])
       return {...state, schools: [...state.schools, action.school]}
     default:
       return state

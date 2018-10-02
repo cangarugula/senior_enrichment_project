@@ -38,6 +38,9 @@ router.delete('/:id', (req, res, next) => {
 
 router.put('/:id', (req, res, next) => {
   Student.findById(req.params.id)
-    .then(student => student.update(req.body))
+    .then(student => {
+      student.update(req.body)
+      res.send(req.body)
+    })
     .catch(next)
 })

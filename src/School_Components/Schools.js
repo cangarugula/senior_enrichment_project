@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import {getSchools} from './store'
+import {getSchools} from '../store'
 
 class Schools extends Component {
 
@@ -14,7 +14,7 @@ class Schools extends Component {
 
 
   componentDidUpdate(prevProps) {
-    if(this.props !== prevProps || !this.state.loaded){
+    if(this.props.students !== prevProps.students){
       this.setState({
         loaded: !this.state.loaded
       })

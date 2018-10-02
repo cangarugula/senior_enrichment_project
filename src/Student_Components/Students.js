@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { getStudents } from './store'
 
 class Students extends Component {
 
@@ -12,18 +11,9 @@ class Students extends Component {
     }
   }
 
-  // componentDidMount() {
-  //   this.props.getStudents()
-  //   this.setState({
-  //     loaded: true
-  //   })
-  // }
 
   componentDidUpdate(prevProps) {
-    console.log('this ',this.props)
-    console.log('prev ', prevProps)
     if(this.props !== prevProps){
-      console.log('update')
       this.setState({
         loaded: !this.state.loaded
       })
@@ -33,7 +23,7 @@ class Students extends Component {
 
   render() {
     const { students , schools} = this.props
-    console.log('render')
+
     return (
       <div>
         <h3>Students</h3>
@@ -59,10 +49,5 @@ const mapStateToProps = ({studentsReducer, schoolsReducer}) => {
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    getStudents: () => dispatch(getStudents())
-  }
-}
 
-export default connect(mapStateToProps, mapDispatchToProps)(Students)
+export default connect(mapStateToProps)(Students)

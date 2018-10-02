@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { _updateSchool, saveSchool, getSchool, deleteSchool, deleteStudent, saveStudent } from './store'
+import { _updateSchool, saveSchool, getSchool, deleteSchool, deleteStudent, saveStudent } from '../store'
 
 class School extends Component {
   constructor(props) {
@@ -52,7 +52,6 @@ class School extends Component {
 
   handleUnenrollStudent(student) {
     const update = {...student, schoolId: null}
-    console.log(update)
     this.props.saveStudent(update)
     this.setState({
       loaded: !this.state.loaded
@@ -102,7 +101,7 @@ class School extends Component {
                 <div>
                   <ul>
                     {
-                      students.map(student => <li key={student.id} >{student.firstName} {student.lastName} <button onClick={()=> handleUnenrollStudent(student)}>X</button></li> )
+                      students.map(student => <li key={student.id} >{student.firstName} {student.lastName} <button onClick={()=> handleUnenrollStudent(student)}>Unenroll</button></li> )
                     }
                   </ul>
                 </div>
