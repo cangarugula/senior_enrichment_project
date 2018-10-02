@@ -70,44 +70,47 @@ class School extends Component {
           id
             ? (
               <div>
-                <h3>{name}</h3>
+                <h4>{name}</h4>
                 <div>
-                  <form onSubmit={handleSave}>
-                    <div>
-                      <label>Name: </label>
-                        <input name='name' value={name} onChange={handleChange}/>
+                  <form onSubmit={handleSave} >
+                    <div className='form-group'>
+                      <label className="control-label" for='school-name'>Name: </label>
+                        <input type='text' id='school-name' name='name' value={name} onChange={handleChange}/>
                     </div>
-                    <div>
-                      <label>Address: </label>
-                      <input name='address'value={address} onChange={handleChange}/>
+                    <div className='form-group'>
+                      <label className="control-label" for='address'>Address: </label>
+                      <input id='address' name='address'value={address} onChange={handleChange}/>
                     </div>
-                    <div>
-                      <label>Description: </label>
-                      <textarea name='description' value={description} onChange={handleChange}/>
+                    <div className='form-group'>
+                      <label className="control-label" for='description'>Description: </label>
+                      <textarea id='description' name='description' class="form-control" rows="5" value={description} onChange={handleChange}/>
                     </div>
-                    <button id='save' disabled={true} type='submit' >Save</button>
+                    <div >
+                      <button type='button' className='btn btn-primary' id='save' disabled={true} type='submit' >Save</button>
+
+                      <button type='button' className='btn btn-primary' onClick={()=> this.props.history.push('/students')}>Back</button>
+
+                      <button type='button' className='btn btn-danger btn-sm' onClick={() => handleDeleteSchool()}>Delete</button>
+
+                      <h5 id='status' hidden={true} >Saved!</h5>
+                    </div>
+
                   </form>
                 </div>
                 <div>
-                  <div >
-                    <h5 id='status' hidden={true} >Saved!</h5>
-                  </div>
-                  <button onClick={() => handleDeleteSchool()}>Delete</button>
-                </div>
-                <div>
                   <h4>Students Enrolled:</h4>
-                  <Link to={`/students/create/${this.props.id}`}><button>Add Student</button></Link>
+                  <Link to={`/students/create/${this.props.id}`}><button type='button' className='btn btn-success btn-sm' >Add Student</button></Link>
                 </div>
                 <div>
                   <ul>
                     {
-                      students.map(student => <li key={student.id} >{student.firstName} {student.lastName} <button onClick={()=> handleUnenrollStudent(student)}>Unenroll</button></li> )
+                      students.map(student => <li key={student.id} >{student.firstName} {student.lastName} <button type='button' className='btn btn-warning btn-sm' onClick={()=> handleUnenrollStudent(student)}>Unenroll</button></li> )
                     }
                   </ul>
                 </div>
               </div>
             ) : (
-              <span> Loading... </span>
+              <span> Loading school info... Please wait. </span>
             )
         }
       </Fragment>

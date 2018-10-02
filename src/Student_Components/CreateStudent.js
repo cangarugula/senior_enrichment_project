@@ -35,9 +35,6 @@ class CreateStudent extends Component {
     const {firstName, lastName, gpa, schoolId} = this.state
     const {handleChange, handleSubmit} = this
 
-    console.log('history ', this.props.history)
-    console.log('match params ', this.props.schoolId)
-
     return (
       <div>
         <h4>Create Student</h4>

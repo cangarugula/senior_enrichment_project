@@ -26,8 +26,8 @@ class Students extends Component {
 
     return (
       <div>
-        <h3>Students</h3>
-        <Link to='/students/create'><button>Add Student</button></Link>
+        <h4 >Students</h4>
+        <Link to='/students/create'><button className='btn btn-success' >Add Student</button></Link>
         <ul>
           {
             students.map(student => {

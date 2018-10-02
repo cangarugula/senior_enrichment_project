@@ -57,22 +57,22 @@ class Student extends Component {
         {
           student.id ? (
             <div>
-              <h4>{student.firstName} {student.lastName}</h4>
+              <h4 id='student_header'>{student.firstName} {student.lastName}</h4>
               <form onSubmit={handleSave}>
-                <div>
-                  <label>First Name: </label>
-                  <input name='firstName' value={student.firstName} onChange={handleChange}/>
+                <div className='form-group'>
+                  <label for='firstName' >First Name: </label>
+                  <input type='text' id='firstName' name='firstName' value={student.firstName} onChange={handleChange}/>
                 </div>
-                <div>
-                  <label>Last Name: </label>
-                  <input name='lastName' value={student.lastName} onChange={handleChange}/>
+                <div className='form-group'>
+                  <label for='lastName'>Last Name: </label>
+                  <input type='text' id='lastName' name='lastName' value={student.lastName} onChange={handleChange}/>
                 </div>
-                <div>
-                  <label>GPA: </label>
-                  <input name='gpa' value={student.gpa} onChange={handleChange}/>
+                <div className='form-group'>
+                  <label for='gpa'>GPA: </label>
+                  <input type='text' id='gpa' name='gpa' value={student.gpa} onChange={handleChange}/>
                 </div>
-                <div>
-                  <label>School: </label>
+                <div className='dropdown' >
+                  <label >School </label>
                   <select name='schoolId' onChange={handleChange} value={student.schoolId ? student.schoolId : 'null'}>
                     <option value={''} >None</option>
                     {
@@ -82,17 +82,18 @@ class Student extends Component {
                 </div>
 
                 <div>
-                  <button id='save' disabled={true} type='submit'>Save</button>
-                </div>
-                </form>
-                <div >
+                  <button type='button' className='btn btn-primary' id='save' disabled={true} type='submit' >Save</button>
+
+                  <button type='button' className='btn btn-primary' onClick={()=> this.props.history.push('/students')}>Back</button>
+
+                  <button type='button' className='btn btn-danger btn-sm' onClick={handleDelete}>Delete</button>
+
                   <h5 id='status' hidden={true} >Saved!</h5>
                 </div>
-                <button onClick={handleDelete}>Delete</button>
-                <button onClick={()=> this.props.history.push('/students')}>Back</button>
+                </form>
                 </div>
           ) : (
-            <span>Loading student info. Please wait.</span>
+            <span>Loading student info... Please wait.</span>
           )
         }
       </Fragment>

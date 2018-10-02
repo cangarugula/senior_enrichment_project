@@ -30,6 +30,7 @@ class Main extends Component {
               <Route path='/schools/:id' render={ ({match, history}) => <School id={match.params.id*1} history={history} />}></Route>
               <Route exact path='/schools' render={ ()=>  <Schools /> }></Route>
               <Route exact path='/students' render={ ()=>  <Students /> }></Route>
+
             </Switch>
           </div>
         </Router>

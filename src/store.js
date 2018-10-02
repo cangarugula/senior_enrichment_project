@@ -77,7 +77,6 @@ export const saveStudent = (student) => {
   } else {
     student.schoolId = student.schoolId * 1
   }
-  console.log(student)
   return (dispatch) => {
     axios.put(`/api/students/${student.id}`, student)
       .then(() => {

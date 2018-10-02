@@ -25,8 +25,8 @@ class Schools extends Component {
     const {schools, students} = this.props
     return (
       <div>
-        <h3>Schools</h3>
-        <Link to='/schools/create'><button>Create School</button></Link>
+        <h4>Schools</h4>
+        <Link to='/schools/create'><button className='btn btn-info btn-sm' >Create School</button></Link>
         <ul>
         {
           schools.map( school => {
