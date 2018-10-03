@@ -39,19 +39,19 @@ class CreateStudent extends Component {
       <div>
         <h4>Create Student</h4>
         <form onSubmit={handleSubmit}>
-          <div>
-            <label>First Name: </label>
-            <input name='firstName' value={firstName} onChange={handleChange}/>
+          <div className='form-group'>
+            <label for='firstName'>First Name: </label>
+            <input type='text' id='firstName' name='firstName' value={firstName} onChange={handleChange}/>
           </div>
-          <div>
-            <label>Last Name: </label>
-            <input name='lastName' value={lastName} onChange={handleChange}/>
+          <div className='form-group'>
+            <label for='lastName'>Last Name: </label>
+            <input type='text' id='lastName' name='lastName' value={lastName} onChange={handleChange}/>
           </div>
-          <div>
-            <label>GPA: </label>
-            <input name='gpa' value={gpa} onChange={handleChange}/>
+          <div className='form-group'>
+            <label for='gpa'>GPA: </label>
+            <input maxLength='4' type='text' id='gpa' name='gpa' value={gpa} onChange={handleChange}/>
           </div>
-          <div>
+          <div className='dropdown'>
             <label>School: </label>
             <select name='schoolId' value={schoolId} onChange={handleChange}>
             <option>----</option>
@@ -60,7 +60,7 @@ class CreateStudent extends Component {
             }
             </select>
           </div>
-            <button type='submit' >Save</button>
+            <button type='submit button' className='btn btn-primary'>Save</button>
         </form>
       </div>
     )

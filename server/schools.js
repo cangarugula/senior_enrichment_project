@@ -18,6 +18,7 @@ router.get('/:id', (req, res, next) => {
     }
   })
     .then(school => res.send(school))
+    .catch(next)
 })
 
 router.post('/', (req, res, next) => {

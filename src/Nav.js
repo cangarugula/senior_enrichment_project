@@ -5,14 +5,20 @@ import { Link } from 'react-router-dom'
 const Nav = ({students, schools}) => {
 
   return (
-    <div className='btn-group-justified'>
-      <Link to='/'><button className='btn-group-justified' className='btn btn-primary'>Home</button></Link>
+    <div className='nav nav-tabs'>
+      <li className='nav-item'>
+      <Link className='nav-link' to='/'>Home</Link>
+      </li>
 
 
-      <Link to='/students'> <button className='btn-group-justified' className='btn btn-success'>Students ({students.length})</button> </Link>
+      <li className='nav-item'>
+        <Link className='nav-link' to='/students'>Students ({students.length})</Link>
+      </li>
 
 
-      <Link to='/schools'> <button className='btn-group-justified' className='btn btn-info' >Schools ({schools.length})</button> </Link>
+      <li className='nav-item' >
+        <Link className='nav-link' to='/schools'>Schools ({schools.length})</Link>
+      </li>
     </div>
   )
 }

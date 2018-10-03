@@ -8,6 +8,7 @@ import School from './School_Components/School'
 import CreateSchool from './School_Components/CreateSchool'
 import Student from './Student_Components/Student'
 import CreateStudent from './Student_Components/CreateStudent'
+import Home from './Home'
 
 class Main extends Component {
 
@@ -21,17 +22,18 @@ class Main extends Component {
         <Router>
           <div>
             <Nav />
-            <Switch>
-
-              <Route exact path='/schools/create' render={ ({history}) => <CreateSchool history={history} /> }></Route>
-              <Route exact path='/students/create' render={({history}) => <CreateStudent history={history} />}></Route>
-              <Route path='/students/create/:id' render={({history,  match}) => <CreateStudent history={history} schoolId={match.params.id*1} />}></Route>
-              <Route path='/students/:id' render={({match, history}) => <Student id={match.params.id*1} history={history}/> }></Route>
-              <Route path='/schools/:id' render={ ({match, history}) => <School id={match.params.id*1} history={history} />}></Route>
-              <Route exact path='/schools' render={ ()=>  <Schools /> }></Route>
-              <Route exact path='/students' render={ ()=>  <Students /> }></Route>
-
-            </Switch>
+            <div className='container'>
+              <Switch>
+                <Route exact path='/schools' render={ ()=>  <Schools /> }></Route>
+                <Route exact path='/students' render={ ()=>  <Students /> }></Route>
+                <Route exact path='/schools/create' render={ ({history}) => <CreateSchool history={history} /> }></Route>
+                <Route exact path='/students/create' render={({history}) => <CreateStudent history={history} />}></Route>
+                <Route exact path='/' component={Home}></Route>
+                <Route path='/students/create/:id' render={({history,  match}) => <CreateStudent history={history} schoolId={match.params.id*1} />}></Route>
+                <Route path='/students/:id' render={({match, history}) => <Student id={match.params.id*1} history={history}/> }></Route>
+                <Route path='/schools/:id' render={ ({match, history}) => <School id={match.params.id*1} history={history} />}></Route>
+              </Switch>
+            </div>
           </div>
         </Router>
       </div>

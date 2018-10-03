@@ -26,12 +26,14 @@ class Schools extends Component {
     return (
       <div>
         <h4>Schools</h4>
-        <Link to='/schools/create'><button className='btn btn-info btn-sm' >Create School</button></Link>
-        <ul>
+        <Link to='/schools/create'><button className='btn btn-info btn-md' >Create School</button></Link>
+        <ul className='list-group'>
         {
           schools.map( school => {
           const studentCount = students.filter(student => student.schoolId === school.id).length
-          return <Link key={school.id} to={`/schools/${school.id}`}><li key={school.id} >{school.name} ({studentCount})</li></Link>
+          return <li key={school.id} className='list-group-item'>
+          <Link key={school.id} to={`/schools/${school.id}`}>{school.name} ({studentCount})</Link>
+          </li>
           })
         }
         </ul>

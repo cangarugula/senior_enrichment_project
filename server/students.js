@@ -19,6 +19,7 @@ router.get('/:id', (req, res, next) => {
     }
   })
     .then(student => res.send(student))
+    .catch(next)
 })
 
 router.post('/', (req, res, next) => {

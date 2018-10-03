@@ -79,32 +79,32 @@ class School extends Component {
                     </div>
                     <div className='form-group'>
                       <label className="control-label" for='address'>Address: </label>
-                      <input id='address' name='address'value={address} onChange={handleChange}/>
+                      <input type='text' id='address' name='address'value={address} onChange={handleChange}/>
                     </div>
                     <div className='form-group'>
                       <label className="control-label" for='description'>Description: </label>
-                      <textarea id='description' name='description' class="form-control" rows="5" value={description} onChange={handleChange}/>
+                      <textarea type='text' id='description' name='description' class="form-control" rows="5" value={description} onChange={handleChange}/>
                     </div>
                     <div >
                       <button type='button' className='btn btn-primary' id='save' disabled={true} type='submit' >Save</button>
 
-                      <button type='button' className='btn btn-primary' onClick={()=> this.props.history.push('/students')}>Back</button>
+                      <button type='button' className='btn btn-info' onClick={()=> this.props.history.push('/students')}>Back</button>
 
-                      <button type='button' className='btn btn-danger btn-sm' onClick={() => handleDeleteSchool()}>Delete</button>
+                      <button type='button' className='btn btn-danger btn-sm' style={{float: "right"}} onClick={() => handleDeleteSchool()}>Delete</button>
 
                       <h5 id='status' hidden={true} >Saved!</h5>
                     </div>
 
                   </form>
                 </div>
-                <div>
+                <div className='container'>
                   <h4>Students Enrolled:</h4>
                   <Link to={`/students/create/${this.props.id}`}><button type='button' className='btn btn-success btn-sm' >Add Student</button></Link>
                 </div>
                 <div>
-                  <ul>
+                  <ul className='list-group'>
                     {
-                      students.map(student => <li key={student.id} >{student.firstName} {student.lastName} <button type='button' className='btn btn-warning btn-sm' onClick={()=> handleUnenrollStudent(student)}>Unenroll</button></li> )
+                      students.map(student => <li className='list-group-item' key={student.id} >{student.firstName} {student.lastName} <button type='button' className='btn btn-warning btn-sm' onClick={()=> handleUnenrollStudent(student)}>Unenroll</button></li> )
                     }
                   </ul>
                 </div>

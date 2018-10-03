@@ -57,7 +57,7 @@ class Student extends Component {
         {
           student.id ? (
             <div>
-              <h4 id='student_header'>{student.firstName} {student.lastName}</h4>
+              <h4 >{student.firstName} {student.lastName}</h4>
               <form onSubmit={handleSave}>
                 <div className='form-group'>
                   <label for='firstName' >First Name: </label>
@@ -69,7 +69,7 @@ class Student extends Component {
                 </div>
                 <div className='form-group'>
                   <label for='gpa'>GPA: </label>
-                  <input type='text' id='gpa' name='gpa' value={student.gpa} onChange={handleChange}/>
+                  <input maxLength='4' type='text' id='gpa' name='gpa' value={student.gpa} onChange={handleChange}/>
                 </div>
                 <div className='dropdown' >
                   <label >School </label>

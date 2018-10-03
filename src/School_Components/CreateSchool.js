@@ -35,19 +35,19 @@ class CreateSchool extends Component {
       <div>
         <h4>Create School</h4>
         <form onSubmit={handleSubmit}>
-          <div>
-            <label>Name: </label>
-            <input name='name' value={name} onChange={handleChange}/>
+          <div className='form-group'>
+            <label className="control-label" for='school-name'>Name: </label>
+            <input type='text' id='school-name' name='name' value={name} onChange={handleChange}/>
           </div>
-          <div>
-            <label>Address: </label>
-            <input name='address' value={address} onChange={handleChange}/>
+          <div className='form-group'>
+            <label className="control-label" for='address'>Address: </label>
+            <input type='text' id='address' name='address' value={address} onChange={handleChange}/>
           </div>
-          <div>
-            <label>Description: </label>
-            <textarea name='description' value={description} onChange={handleChange}/>
+          <div className='form-group'>
+            <label className="control-label" for='description'>Description: </label>
+            <textarea type='text' id='description' class="form-control" rows="5"  name='description' value={description} onChange={handleChange}/>
           </div>
-            <button type='submit' >Save</button>
+            <button type='submit button' className='btn btn-primary'>Save</button>
         </form>
       </div>
     )
